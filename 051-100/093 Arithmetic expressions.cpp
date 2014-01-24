@@ -13,9 +13,11 @@ typedef vector<double> VD;
 typedef VD::iterator VDIT;
 const int N = 101;
 const double eps = 1e-8;
+
 inline bool zero(double d) {
     return fabs(d)<eps;
 }
+
 inline int isInt(double n) {
     if(n<=-eps) return 0;
     int t = int(n+eps);
@@ -23,7 +25,8 @@ inline int isInt(double n) {
     if(t>=N) t=0;
     return t;
 }
-bool exist[101];
+bool exist[N];
+
 void dfs(VD v) {
     if(v.size()==1) {
         exist[isInt(v[0])]=true;
@@ -33,23 +36,23 @@ void dfs(VD v) {
     for(VDIT i=v.begin(); i<v.end(); ++i) {
         for(VDIT j=v.begin(); j<v.end(); ++j) {
             if(i==j) continue;
-            VD vd;
+            VD b;
             for(k=v.begin(); k<v.end(); ++k) {
                 if(k!=i && k!=j) {
-                    vd.push_back(*k);
+                    b.push_back(*k);
                 }
             }
-            VD a, b, c, d;
-            a=b=c=d=vd;
-            a.push_back((*i)+(*j));
-            dfs(a);
             b.push_back((*i)-(*j));
             dfs(b);
-            c.push_back((*i)*(*j));
-            dfs(c);
             if(!zero(*j)) {
-                d.push_back((*i)/(*j));
-                dfs(d);
+                b.back()=(*i)/(*j);
+                dfs(b);
+            }
+            if(i<j) {
+                b.back()=(*i)+(*j);
+                dfs(b);
+                b.back()=(*i)*(*j);
+                dfs(b);
             }
         }
     }
