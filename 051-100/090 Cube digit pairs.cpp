@@ -78,6 +78,6 @@ int main() {
     cur.resize(N);
     genComb(0, -1);
     getAns();
-    cout<<x<<" "<<y<<endl;
+    cout<<y<<endl;
     return 0;
 }
