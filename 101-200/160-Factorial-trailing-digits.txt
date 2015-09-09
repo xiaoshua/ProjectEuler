@@ -1,0 +1,67 @@
+n = 10 ** 12
+mod = 10 ** 5
+fact_rem = [0] * mod
+
+
+def init():
+    fac = 1
+    for i in range(mod):
+        if i % 5 != 0:
+            fac = (fac * i) % mod
+        fact_rem[i] = fac
+
+
+def get_trailing_zero_count(num):
+    ret = 0
+    while num > 0:
+        num /= 5
+        ret += num / 5
+    return ret
+
+
+def pw(a, b):
+    ret = 1
+    while b > 0:
+        if b & 1 > 0:
+            ret = (ret * a) % mod
+        a = (a * a) % mod
+        b >>= 1
+    return ret
+
+
+def dfs(num):
+    if num == 0:
+        return 1
+
+    rem = num % mod
+    ret = pw(fact_rem[mod - 1], num / mod)
+    ret = (ret * fact_rem[rem]) % mod
+    if num > 5:
+        ret = (ret * dfs(num / 5)) % mod
+    return ret
+
+
+# inverse element of 2^div_cnt
+def get_inverse_num(div_cnt):
+    print('get_inverse_num')
+    record = dict()
+    num = 1
+
+    # find circle
+    for power_count in xrange(1, 1000000000):
+        num = (num << 1) % mod
+        if num in record.keys():
+            circle = power_count - record[num]
+            break
+        else:
+            record[num] = power_count
+    div_cnt %= circle
+    return pw(2, circle - div_cnt)
+
+
+if __name__ == '__main__':
+    init()
+    zero_num = get_trailing_zero_count(n)
+    base_ans = dfs(n)
+    ans = base_ans * get_inverse_num(zero_num)
+    print(base_ans, ans % mod)
