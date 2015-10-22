@@ -18,20 +18,21 @@ str_mat = '''7  53 183 439 863 497 383 563  79 973 287  63 343 169 583
 
 begin = time.time()
 
-int_mat = [[int(cell) for cell in line.split()] for line in str_mat.split('n')]
+int_mat = [[int(cell) for cell in line.split()] for line in str_mat.split('\n')]
 column_number = len(int_mat[0])
-max_mask = 1  column_number
+max_mask = 1 << column_number
 row_number = len(int_mat)
-dp = [[0]  max_mask for _ in range(1 + row_number)]
+dp = [[0] * max_mask for j in range(1 + row_number)]
 
-for row_id in range(row_number)
-    for mask in xrange(max_mask)
-        if row_id != 0 and dp[row_id][mask] == 0
+for row_id in range(row_number):
+    for mask in xrange(max_mask):
+        if row_id != 0 and dp[row_id][mask] == 0:
             continue
-        for column_id in xrange(column_number)
-            if (mask & (1  column_id)) == 0
-                new_mask = mask  (1  column_id)
+        for column_id in xrange(column_number):
+            if (mask & (1 << column_id)) == 0:
+                new_mask = mask | (1 << column_id)
                 dp[row_id + 1][new_mask] = max(dp[row_id + 1][new_mask], dp[row_id][mask] + int_mat[row_id][column_id])
 
 end = time.time()
 print(end - begin, dp[row_number][max_mask - 1])
+
