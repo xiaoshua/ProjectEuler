@@ -1,7 +1,6 @@
 #################
 ## Eclipse
 #################
-a.cpp
 *.pydevproject
 .project
 .metadata
