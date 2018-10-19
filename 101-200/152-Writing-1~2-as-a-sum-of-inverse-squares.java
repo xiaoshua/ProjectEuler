@@ -117,8 +117,6 @@ public class Main {
     }
 
     static List<Integer> calculateCandidate() {
-
-
         List<Integer> candidatePrimeList = new ArrayList<>(N);
         candidatePrimeList.add(2);
         candidatePrimeList.add(3);
@@ -128,7 +126,7 @@ public class Main {
         //assume all 2^a * 3^b is possible
         for (int i = 1; i < N; i *= 2) {
             for (int j = 1; j < N; j *= 3) {
-                if (i * j > N) {
+                if (i * j >= N) {
                     break;
                 }
                 possible[i * j] = true;
